@@ -44,18 +44,19 @@
 #' \item{YEAR}{The year}
 #' \item{EXPEDITION}{A code indicating a specified cruise, ex: EX2203 or all expeditions, ex. "ALL"}
 #' \item{FEATURE}{A code for the geological feature surveyed. If "All" expeditions is specified, FEATURE will = "ALL"}
-#' \item{METRIC}{The metric:}
-#' \itemize{*conductivity (S/m),
-#' *temperature (C),
-#' *depth (m),
-#' *salinity,
-#' *oxygen (%),
-#' *oxygen2 (mg/l),
-#' *oxygen3 (μmol/kg)
-#' *density (kg/m³),
-#' *sound speed (m/s),
-#' *pressure (dbar)}
-#'
+#' \item{METRIC}{Possible metrics:}
+#' \itemize{
+#' \item{conductivity (S/m)},
+#' \item{temperature (C)}
+#' \item{depth (m)}
+#' \item{salinity}
+#' \item{oxygen (%)}
+#' \item{oxygen2 (mg/l)}
+#' \item{oxygen3 (μmol/kg)}
+#' \item{density (kg/m³)}
+#' \item{sound speed (m/s)}
+#' \item{pressure (dbar)}
+#'}
 #' }
 #' @details
 #' NOAA Ocean Exploration collects oceanographic data and water samples by request during mapping and ROV
@@ -66,16 +67,61 @@
 #' @seealso \code{\link{getROVCTD}}
 #' @examples
 #' #Get temperature profiles from all ASPRIRE cruises
-#' EX_CTD = getCTDRosette(metric = "temperature", expedition = "All")
+#' EX_CTD <- getCTDRosette(metric = "temperature", expedition = "All")
 #' #Returns all of the CTD Rosette temperature data collected during the ASPIRE campaign
 #'
 #' #Get all of the CTD Rosette data collected from a single expedition
-#' EX_CTD = getCTDRosette(metric = "ALL", expedition = "EX1903")
+#' EX_CTD <- getCTDRosette(metric = "ALL", expedition = "EX1903")
 #' #Returns all of the CTD Rosette data collected during the EX1903 expedition
 #' @importFrom magrittr "%>%"
 
 getCTDRosette = function(metric = "NULL", expedition = "NULL"){
 
+  # Set up some lists
+  metrics <- c("conductivity", "temperature", "depth", "salinity", "oxygen", "oxidation reduction potential", "turbidity", "fluorometer")
+  expeditions <- c("EX1805", "EX1810", "EX1812", "EX1903", "EX1905", "EX1906", "EX2101", "EX2102", "EX2106", "EX2107", "EX2202", "EX2203")
+  all <- c("All", "all", "ALL")
 
+  if(metric == "NULL" ||
+     metric %in% all &&
+     expedition %in% all ||
+     expedition == "NULL"){
 
+    # If the metric and the expedition are not specified or "All" is specified, the whole data set is returned.
+    return(ASPIRECTDRosette)
+
+  }
+
+  if(metric %in% metrics &&
+     expedition %in% expeditions){
+
+    dat <- ASPIRECTDRosette %>%
+      dplyr::filter(metric == metric,
+                    expedition == expedition)
+
+    return(dat)
+
+  }
+
+  if(metric %in% metrics &&
+     expedition %in% all ||
+     expedition == "NULL"){
+
+    dat <- ASPIRECTDRosette %>%
+      dplyr::filter(metric == metric)
+
+    return(dat)
+
+  }
+
+  if(expedition %in% expeditions &&
+     metric %in% all ||
+     metric == "NULL"){
+
+    dat <- ASPIRECTDRosette %>%
+      dplyr::filter(expedition == expedition)
+
+    return(dat)
+
+  }
 }

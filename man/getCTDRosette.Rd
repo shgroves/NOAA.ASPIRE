@@ -45,18 +45,19 @@ This function returns a dataframe with the following columns:
 \item{YEAR}{The year}
 \item{EXPEDITION}{A code indicating a specified cruise, ex: EX2203 or all expeditions, ex. "ALL"}
 \item{FEATURE}{A code for the geological feature surveyed. If "All" expeditions is specified, FEATURE will = "ALL"}
-\item{METRIC}{The metric:}
-\itemize{*conductivity (S/m),
-*temperature (C),
-*depth (m),
-*salinity,
-*oxygen (\%),
-*oxygen2 (mg/l),
-*oxygen3 (μmol/kg)
-*density (kg/m³),
-*sound speed (m/s),
-*pressure (dbar)}
-
+\item{METRIC}{Possible metrics:}
+\itemize{
+\item{conductivity (S/m)},
+\item{temperature (C)}
+\item{depth (m)}
+\item{salinity}
+\item{oxygen (\%)}
+\item{oxygen2 (mg/l)}
+\item{oxygen3 (μmol/kg)}
+\item{density (kg/m³)}
+\item{sound speed (m/s)}
+\item{pressure (dbar)}
+}
 }
 }
 \description{
@@ -71,11 +72,11 @@ CTD rosette data are archived as .hex and .cnv files, which are produced using S
 }
 \examples{
 #Get temperature profiles from all ASPRIRE cruises
-EX_CTD = getCTDRosette(metric = "temperature", expedition = "All")
+EX_CTD <- getCTDRosette(metric = "temperature", expedition = "All")
 #Returns all of the CTD Rosette temperature data collected during the ASPIRE campaign
 
 #Get all of the CTD Rosette data collected from a single expedition
-EX_CTD = getCTDRosette(metric = "ALL", expedition = "EX1903")
+EX_CTD <- getCTDRosette(metric = "ALL", expedition = "EX1903")
 #Returns all of the CTD Rosette data collected during the EX1903 expedition
 }
 \seealso{
